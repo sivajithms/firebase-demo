@@ -1,23 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import {firebaseApp} from './firebase/configs'
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
+
+const q = query(collection(db, "products"));
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={async()=>{
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+        });
+
+      }}>click me</button>
     </div>
   );
 }
